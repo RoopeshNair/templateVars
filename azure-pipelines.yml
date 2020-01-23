@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+stages:
+- stage: MyDev
+  displayName: MyDev
+  dependsOn: Build
+  variables:
+  - name: EnvironmentName
+    value: 'Dev'
+  - name: AzureSub
+    value: 'RMPM'
+
+  jobs:
+
+    - template: jobs/Infra.yml
+      parameters:
+        EnvironmentName: $(EnvironmentName)
+        AzureSub: $(AzureSub)
+
