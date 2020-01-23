@@ -1,3 +1,7 @@
+parameters:
+  EnvironmentName: ''
+  AzureSub: ''
+
 jobs:
 - deployment: Infrastructure
   displayName: Infrastructure Deployment
