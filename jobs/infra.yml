@@ -1,0 +1,24 @@
+jobs:
+- deployment: Infrastructure
+  displayName: Infrastructure Deployment
+  pool:
+    vmImage: 'vs2017-win2016'
+  environment: '${{parameters.EnvironmentName}}'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: DownloadBuildArtifacts@0
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            downloadPath: '$(System.ArtifactsDirectory)'
+            artifactName: 'drop'
+        
+        - task: AzurePowerShell@4
+          displayName: 'Azure PowerShell script: Grant Pipeline Service Principal Access to Key Vault'
+          inputs:
+            azureSubscription: '${{parameters.AzureSub}}'
+            ScriptPath: '$(System.ArtifactsDirectory)/drop/<pathToFile>/PipelineAccessToKeyVault.ps1'
+            ScriptArguments: '-KeyVaultName ${{parameters.KeyVaultName}}'
+            azurePowerShellVersion: LatestVersion
