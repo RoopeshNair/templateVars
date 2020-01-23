@@ -1,0 +1,1 @@
+Template vars test
